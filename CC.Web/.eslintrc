@@ -1,0 +1,22 @@
+﻿{
+  "extends": "eslint:recommended",
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "angular": false,
+    "breeze": false,
+    "moment": false,
+    "toastr": false
+  },
+  "rules": {
+    "default-case": "error",
+    "eqeqeq": [ "error", "smart" ],
+    "guard-for-in": "error",
+    "quotes": [ "error", "single" ],
+    "no-eval": "error",
+    "no-multi-spaces": "error",
+    "yoda": "error"
+  }
+}

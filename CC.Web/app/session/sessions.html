@@ -1,0 +1,48 @@
+﻿<section class="mainbar" ng-controller="sessions as vm">
+    <section class="matter">
+        <div class="container">
+            <div class="row">
+                <div class="form-search">
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-info">
+                            <div ng-click="vm.refresh()">
+                                <i class="fa fa-refresh"></i>
+                                <span>Refresh</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="widget worange">
+                    <div data-cc-widget-header title="{{ vm.title }}" subtitle="{{ vm.sessions.length }}">
+                    </div>
+
+                    <div class="widget-content user">
+                        <div class="padd" ng-repeat="session in vm.sessions">
+                            <div class="user">
+                                <img cc-img-person="{{ session.speaker.imageSource }}" class="img-polaroid user-pic" />
+
+                                <div class="user-details">
+                                    <small>{{ session.timeSlot.name }}</small> at <small>{{ session.room.name }}</small>
+                                    <small class="right hidden-xs">{{ session.level }}</small>
+                                    <small class="right hidden-xs">{{ session.track.name }}</small>
+                                    <small class="right hidden-xs">{{ session.code }}</small>
+
+                                    <h3>{{ session.title }}</h3>
+                                    <h6>{{ session.speaker.fullName }}</h6>
+
+                                    <small class="text-subtle hidden-xs">{{ session.tagsFormatted }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-foot">
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

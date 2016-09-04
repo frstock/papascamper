@@ -1,0 +1,41 @@
+﻿<section class="mainbar" ng-controller="attendees as vm">
+    <section class="matter">
+        <div class="container">
+            <div class="row">
+                <div class="form-search">
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-info">
+                            <div ng-click="vm.refresh()">
+                                <i class="fa fa-refresh"></i>
+                                <span>Refresh</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="widget wgreen">
+                    <div data-cc-widget-header title="{{ vm.title }}" subtitle="{{ vm.attendees.length }}">
+                    </div>
+
+                    <div class="widget-content user">
+                        <div class="padd list-flow" ng-repeat="attendee in vm.attendees">
+                            <div class="user">
+                                <img cc-img-person="{{ attendee.imageSource }}" class="img-polaroid stacked" />
+
+                                <div class="name-stack">
+                                    <h5>{{ attendee.firstName }}</h5>
+                                    <h5>{{ attendee.lastName }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-foot">
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
