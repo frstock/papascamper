@@ -3,6 +3,9 @@
         <div class="container">
             <div class="row">
                 <div class="form-search">
+                    <input type="text" class="input-lg search-query" 
+                         ng-model="vm.speakerSearch" ng-keyup="vm.search($event)" placeholder="Live search..." />
+
                     <div class="btn-group pull-right">
                         <a class="btn btn-info">
                             <div ng-click="vm.refresh()">
@@ -16,11 +19,11 @@
 
             <div class="row">
                 <div class="widget wviolet">
-                    <div data-cc-widget-header title="{{ vm.title }}" subtitle="{{ vm.speakers.length }}">
+                    <div data-cc-widget-header title="{{ vm.title }}" subtitle="{{ vm.filteredSpeakers.length }} / {{ vm.speakers.length }}">
                     </div>
 
                     <div class="widget-content user">
-                        <div class="padd list-flow" ng-repeat="speaker in vm.speakers">
+                        <div class="padd list-flow" ng-repeat="speaker in vm.filteredSpeakers">
                             <div class="user">
                                 <img cc-img-person="{{ speaker.imageSource }}" class="img-polaroid stacked" />
 

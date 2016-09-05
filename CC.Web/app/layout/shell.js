@@ -3,9 +3,9 @@
 
     var controllerId = 'shell';
     angular.module('app').controller(controllerId,
-        ['$rootScope', '$window', 'common', 'config', shell]);
+        ['$rootScope', '$timeout', '$window', 'common', 'config', shell]);
 
-    function shell($rootScope, $window, common, config) {
+    function shell($rootScope, $timeout, $window, common, config) {
         var vm = this;
         var logSuccess = common.logger.getLogFn(controllerId, 'success');
         var events = config.events;
@@ -21,12 +21,15 @@
             trail: 100,
             color: '#F58A00'
         };
+        vm.showSplash = true;
 
         activate();
 
         function activate() {
             logSuccess('Code Camper is loaded!', null, true);
-            common.activateController([], controllerId);
+            common.activateController([], controllerId).then(function () {
+                $timeout(function () { vm.showSplash = false; }, 800);
+            });
         }
 
         function toggleSpinner(on) { vm.isBusy = on; }

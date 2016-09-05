@@ -13,47 +13,110 @@
                         </li>
 
                         <li class="borange">
-                            <div class="pull-left"><i class="fa fa-envelope"></i></div>
-                            <div class="datas-text pull-right">
-                                <span class="bold">{{vm.messageCount}}</span> Messages
-                            </div>
-                            <div class="clearfix"></div>
+                            <a href="#/sessions">
+                                <div class="pull-left"><i class="fa fa-calendar"></i></div>
+                                <div class="datas-text pull-right">
+                                    <span class="bold">{{ vm.sessionCount }}</span> Sessions
+                                </div>
+                                <div class="clearfix"></div>
+                            </a>
                         </li>
 
+                        <li class="bgreen">
+                            <a href="#/attendees">
+                                <div class="pull-left"><i class="fa fa-group"></i></div>
+                                <div class="datas-text pull-right">
+                                    <span class="bold">{{ vm.attendeeCount }}</span> Attendees
+                                </div>
+                                <div class="clearfix"></div>
+                            </a>
+                        </li>
+
+
+                        <li class="bviolet">
+                            <a href="#/speakers">
+                                <div class="pull-left"><i class="fa fa-microphone"></i></div>
+                                <div class="datas-text pull-right">
+                                    <span class="bold">{{ vm.speakerCount }}</span> Speakers
+                                </div>
+                                <div class="clearfix"></div>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-6">
-                    <div class="widget wviolet">
-                        <div data-cc-widget-header title="People"
-                             allow-collapse="true"></div>
+                    <div class="widget wgreen">
+                        <div data-cc-widget-header title="{{ vm.map.title }}" allow-collapse="true"></div>
                         <div class="widget-content text-center text-info">
-                            <table class="table table-condensed table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Age</th>
-                                        <th>Location</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr data-ng-repeat="p in vm.people">
-                                        <td>{{p.firstName}}</td>
-                                        <td>{{p.lastName}}</td>
-                                        <td>{{p.age}}</td>
-                                        <td>{{p.location}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="google-map">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2117.7615286185387!2d4.349921447879784!3d50.84497859679762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c4792b78ea03%3A0x16d9f53400952620!2sPalais+des+cotillons!5e0!3m2!1sfr!2sfr!4v1473061124097"
+                                        width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                            </div>
                         </div>
                         <div class="widget-foot">
                             <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-6">
+                    <div class="widget wlightblue">
+                        <div data-cc-widget-header title="{{ vm.speakers.title }}" allow-collapse="true"></div>
+                        <div class="widget-content text-center text-info">
+                            <carousel class="carousel-inner" interval="vm.speakers.interval">
+                                <slide ng-repeat="speaker in vm.speakers.list" active="speaker.active">
+                                    <img cc-img-person="{{ speaker.imageSource }}" class="img-polaroid" />
+
+                                    <div class="carousel-caption">
+                                        <h4>{{ speaker.fullName }}</h4>
+                                    </div>
+                                </slide>
+                            </carousel>
+                        </div>
+                        <div class="widget-foot">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="widget wviolet">
+                        <div data-cc-widget-header title="People"
+                             allow-collapse="true"></div>
+                        <div class="widget-content text-center text-info">
+                            <div class="widget-content referrer">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <a ng-click="vm.content.setSort('track')">Track</a>
+                                            </th>
+                                            <th>
+                                                <a ng-click="vm.content.setSort('count')">Sessions</a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="track in vm.content.tracks |
+                                            orderBy:vm.content.predicate:vm.content.reverse">
+                                            <td>{{ track.name }}</td>
+                                            <td>{{ track.count }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="widget-foot">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
                     <div class="widget wgreen">
                         <div data-cc-widget-header title="{{vm.news.title}}"
                              allow-collapse="true"></div>

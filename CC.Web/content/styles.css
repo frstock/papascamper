@@ -1,7 +1,27 @@
-﻿/*#region Override background color theme */
+﻿
+/* Flexible iFrame */
+
+.google-maps {
+    position: relative;
+    padding-bottom: 75%;
+    // This is the aspect ratio height: 0;
+    overflow: hidden;
+}
+
+    .google-maps iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+/*#region Override background color theme */
 
 /*For Bootstrap 3*/
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer;
+}
 
 
 body {
@@ -64,7 +84,7 @@ body {
 
 .ng-cloak {
     display: none !important;
- }
+}
 
 select > option {
     color: black;
@@ -111,7 +131,7 @@ textarea.form-control {
         margin-right: 0;
     }
 
-.btn-group{
+.btn-group {
     margin: .2em;
 }
 
@@ -179,7 +199,8 @@ small {
 
 .input-group[class*="col-"] {
     width: 80%;
-    margin: 0 1.5em;}
+    margin: 0 1.5em;
+}
 
 .user .user-pic {
     display: block;
@@ -376,27 +397,28 @@ a {
     opacity: 1;
 }
 
-.fader-animation.ng-enter,
-.fader-animation.ng-leave.ng-leave-active {
-    opacity: 0;
-}
-
-    .fader-animation.ng-enter.ng-enter-active {
-        opacity: 1;
+    .fader-animation.ng-enter,
+    .fader-animation.ng-leave.ng-leave-active {
+        opacity: 0;
     }
 
+        .fader-animation.ng-enter.ng-enter-active {
+            opacity: 1;
+        }
+
 .fader-animation.ng-move {
-  opacity:0.5;
+    opacity: 0.5;
 }
-.fader-animation.ng-move.ng-move-active {
-  opacity:1;
-}
+
+    .fader-animation.ng-move.ng-move-active {
+        opacity: 1;
+    }
 
 /*#endregion*/
 
 /*#region Angular ng-show dissolve animation */
 .dissolve-animation.ng-hide-remove {
-    display: inline!important;
+    display: inline !important;
 }
 
 .dissolve-animation.ng-hide-remove,

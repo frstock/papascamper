@@ -143,6 +143,7 @@
     <Content Include="app\session\sessions.js" />
     <Content Include="app\speaker\speakers.js" />
     <Content Include="app\speaker\speakers.html" />
+    <Content Include="content\ui-bootstrap-csp.css" />
     <Content Include="packages.config" />
     <Content Include="scripts\angular-animate.min.js.map" />
     <Content Include="scripts\angular-route.min.js.map" />
@@ -151,6 +152,10 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="scripts\angular-ui\ui-bootstrap-tpls.js" />
+    <Content Include="scripts\angular-ui\ui-bootstrap-tpls.min.js" />
+    <Content Include="scripts\angular-ui\ui-bootstrap.js" />
+    <Content Include="scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="scripts\jquery-2.1.1.min.map" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />

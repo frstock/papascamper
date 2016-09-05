@@ -76,7 +76,7 @@
                 // translates to ...
                 // vm.filteredSessions 
                 //      = vm.sessions.filter(function(item( { returns vm.sessionFilter (item) } );
-                viewmodel[filteredList] = viewmodel[list].filter(function(item) {
+                viewmodel[filteredList] = viewmodel[list].filter(function (item) {
                     return viewmodel[filter](item);
                 });
             };
@@ -87,7 +87,7 @@
                 var filterInputTimeout;
 
                 // return what becomes the 'applyFilter' function in the controller
-                return function(searchNow) {
+                return function (searchNow) {
                     if (filterInputTimeout) {
                         $timeout.cancel(filterInputTimeout);
                         filterInputTimeout = null;
@@ -125,7 +125,7 @@
         }
 
         function textContains(text, searchText) {
-            return text && -1 !== text.toLowerCase().indexOf(searchText.toLowerCase());
+            return text && text.toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
         }
     }
 })();

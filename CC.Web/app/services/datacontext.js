@@ -22,7 +22,7 @@
                 sessions: false,
                 attendees: false
             }
-        };  
+        };
 
         var promise;
         var manager = entityManagerFactory.newManager();
@@ -33,8 +33,14 @@
             getPeople: getPeople,
             getMessageCount: getMessageCount,
             getSessionPartials: getSessionPartials,
+            getSessionCount: getSessionCount,
             getSpeakerPartials: getSpeakerPartials,
+            getSpeakerCount: getSpeakerCount,
+            getSpeakersTopLocal: getSpeakersTopLocal,
             getAttendees: getAttendees,
+            getAttendeeCount: getAttendeeCount,
+            getAttendeeFilteredCount: getAttendeeFilteredCount,
+            getTrackCount: getTrackCount,
             getLookups: getLookups,
             prime: prime
         };
@@ -88,7 +94,7 @@
             var predicate = breeze.Predicate.create('isSpeaker', '==', true);
 
             var speakers = [];
-            
+
             if (!forceRefresh) {
                 speakers = _getAllLocal(entityNames.speaker, orderBy, predicate);
                 return $q.when(speakers);
@@ -115,13 +121,50 @@
             }
         }
 
-        function getAttendees(forceRefresh) {
+        function getTrackCount() {
+            return getSessionPartials().then(function (data) {
+                var sessions = data;
+
+                var trackMap = sessions.reduce(function (accumulator, session) {
+                    var trackId = session.track.id;
+                    var trackName = session.track.name;
+
+                    if (accumulator[trackId - 1]) {
+                        accumulator[trackId - 1].count++;
+                    } else {
+                        accumulator[trackId - 1] = {
+                            name: trackName,
+                            count: 1
+                        }
+                    }
+
+                    return accumulator;
+                }, []);
+
+                return trackMap;
+            });
+        }
+
+        function getSpeakersTopLocal() {
             var orderBy = 'firstName, lastName';
-            var attendees = [];
+            var predicate = breeze.Predicate.create('lastName', '==', 'papa')
+                .or('lastName', '==', 'Guthrie')
+                .or('lastName', '==', 'Bell')
+                .or('lastName', '==', 'Hanselman')
+                .or('lastName', '==', 'Lerman')
+                .and('isSpeaker', '==', true);
+
+            return _getAllLocal(entityNames.speaker, orderBy, predicate);
+        }
+
+        function getAttendees(forceRefresh, page, size, nameFilter) {
+            var orderBy = 'firstName, lastName';
+
+            var skip = page ? (page - 1) * size : 0;
+            var take = size || 20;
 
             if (_areAttendeesLoaded() && !forceRefresh) {
-                attendees = _getAllLocal(entityNames.attendee, orderBy);
-                return $q.when(attendees);
+                return $q.when(getByPage())
             }
 
             return EntityQuery.from('Persons')
@@ -134,13 +177,88 @@
                 .catch(_queryFailed);
 
             function querySucceeded(data) {
-                attendees = data.results;
                 _areAttendeesLoaded(true);
-                log('Retrieved [Attendees Partials] from remote data source', attendees.length, true);
+                log('Retrieved [Attendees Partials] from remote data source', data.results.length, true);
+
+                return getByPage();
+            }
+
+            function getByPage() {
+                var predicate = null;
+
+                if (nameFilter) {
+                    predicate = _fullNamePredicate(nameFilter)
+                }
+
+                var attendees = EntityQuery
+                    .from(entityNames.attendee)
+                    .where(predicate)
+                    .skip(skip)
+                    .take(take)
+                    .orderBy(orderBy)
+                    .using(manager)
+                    .executeLocally();
 
                 return attendees;
             }
         }
+
+        function _fullNamePredicate(filterValue) {
+            return breeze.Predicate
+                .create('firstName', 'contains', filterValue)
+                .or('lastName', 'contains', filterValue)
+        }
+
+        function getAttendeeCount() {
+            if (_areAttendeesLoaded()) {
+                return $q.when(_getLocalEntityCount(entityNames.attendee));
+            }
+
+            return EntityQuery.from('Persons')
+                .take(0)
+                .inlineCount()
+                .using(manager)
+                .execute().then(_getInlineCount);
+        }
+
+        function getSessionCount() {
+            if (_areSessionsLoaded()) {
+                return $q.when(_getLocalEntityCount(entityNames.session));
+            }
+
+            return EntityQuery.from('Sessions')
+                .take(0)
+                .inlineCount()
+                .using(manager)
+                .execute().then(_getInlineCount);
+        }
+
+        function getSpeakerCount() {
+            var orderBy = 'firstName, lastName';
+            var predicate = breeze.Predicate.create('isSpeaker', '==', true);
+
+            return _getAllLocal(entityNames.speaker, orderBy, predicate);
+        }
+
+
+        function _getLocalEntityCount(resource) {
+            var entities = EntityQuery.from(resource).using(manager).executeLocally();
+            return entities.length;
+        }
+
+        function getAttendeeFilteredCount(nameFilter) {
+            var predicate = _fullNamePredicate(nameFilter);
+
+            var attendees = EntityQuery
+                   .from(entityNames.attendee)
+                   .where(predicate)
+                   .using(manager)
+                   .executeLocally();
+
+            return attendees.length;
+        }
+
+        function _getInlineCount(data) { return data.inlineCount; }
 
         function prime() {
             if (!promise) {

@@ -7,6 +7,13 @@
     toastr.options.timeOut = 4000;
     toastr.options.positionClass = 'toast-bottom-right';
 
+    var keyCodes = {
+        backSpace: 8,
+        tab: 9,
+        enter: 13,
+        escape: 27, pageUp: 33, pageDown: 34, end: 35, home: 36, left: 37, up: 38, right: 39, down: 40, insert: 45, del: 46
+    };
+
     // For use with the HotTowel-Angular-Breeze add-on that uses Breeze
     var remoteServiceName = 'breeze/Breeze';
 
@@ -26,18 +33,19 @@
         imageSettings: imageSettings,
         events: events,
         remoteServiceName: remoteServiceName,
-        version: '2.1.0'
+        version: '2.1.0',
+        keyCodes:keyCodes
     };
 
     app.value('config', config);
-    
+
     app.config(['$logProvider', function ($logProvider) {
         // turn debugging off/on (no info or warn)
         if ($logProvider.debugEnabled) {
             $logProvider.debugEnabled(true);
         }
     }]);
-    
+
     //#region Configure the common services via commonConfig
     app.config(['commonConfigProvider', function (cfg) {
         cfg.config.controllerActivateSuccessEvent = config.events.controllerActivateSuccess;
